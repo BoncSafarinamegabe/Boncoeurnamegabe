@@ -135,12 +135,7 @@
           <ul class="contact-list"><li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:safarinamegabebonc@gmail.com">safarinamegabebonc@gmail.com</a></li><li><i class="bi bi-telephone" aria-hidden="true"></i><a href="tel:0998434584">0998434584</a></li><li><i class="bi bi-geo-alt" aria-hidden="true"></i>Kinshasa, RDC</li></ul>
           <a class="whatsapp-link" href="https://wa.me/qr/FUIUVKXXEQS2K1" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp" aria-hidden="true"></i> Continuer sur WhatsApp</a>
         </div>
-        <form id="contactForm" class="site-form"
-      action="https://formsubmit.co/safarinamegabebonc@gmail.com"
-      method="POST">
-          <input type="hidden" name="_subject" value="Nouveau message depuis mon site">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_captcha" value="false">
+        <form id="contactForm" class="site-form">
           <div class="form-heading"><span>Parlons de votre besoin</span><i class="bi bi-arrow-down-right" aria-hidden="true"></i></div>
           <label for="contactName">Nom complet</label><input class="form-control" id="contactName" name="name" autocomplete="name" required />
           <label for="contactEmail">Adresse e-mail</label><input class="form-control" id="contactEmail" name="email" type="email" autocomplete="email" required />
@@ -156,12 +151,7 @@
   <footer class="site-footer">
     <div class="container footer-main">
       <div class="footer-identity"><a class="navbar-brand" href="#accueil">Boncoeur <span>Safari</span></a><p>Formation, digital et sécurité à Kinshasa.</p><div class="social-links"><a href="https://www.facebook.com/profile.php?id=61557416573533" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook" aria-hidden="true"></i></a><a href="https://www.instagram.com/safari202571?igsh=Mzg0N2ZqN3dqaWE3" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a><a href="https://wa.me/qr/FUIUVKXXEQS2K1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp" aria-hidden="true"></i></a><a href="https://www.linkedin.com/in/safari-boncoeur-namegabe-6716543b9?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin" aria-hidden="true"></i></a></div></div>
-      <form id="newsletterForm" class="newsletter-form"
-      action="https://formsubmit.co/safarinamegabebonc@gmail.com"
-      method="POST">
-        <input type="hidden" name="_subject" value="Nouvelle inscription à la liste d'information">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false"><label for="newsletterEmail">Demander l’inscription à la liste d’information</label><p>Une adresse e-mail suffit pour transmettre la demande.</p><div class="newsletter-input"><input class="form-control" id="newsletterEmail" name="email" type="email" autocomplete="email" placeholder="Votre adresse e-mail" required /><button type="submit" aria-label="Envoyer la demande d’inscription"><i class="bi bi-arrow-right" aria-hidden="true"></i></button></div><p id="newsletterStatus" class="form-status d-none" role="status"></p></form>
+      <form id="newsletterForm" class="newsletter-form"><label for="newsletterEmail">Demander l’inscription à la liste d’information</label><p>Une adresse e-mail suffit pour transmettre la demande.</p><div class="newsletter-input"><input class="form-control" id="newsletterEmail" name="email" type="email" autocomplete="email" placeholder="Votre adresse e-mail" required /><button type="submit" aria-label="Envoyer la demande d’inscription"><i class="bi bi-arrow-right" aria-hidden="true"></i></button></div><p id="newsletterStatus" class="form-status d-none" role="status"></p></form>
     </div>
     <div class="container footer-bottom"><span>© 2026 Boncoeur Namegabe Safari</span><a href="#accueil">Retour en haut <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
   </footer>
@@ -169,63 +159,57 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const formSubmitEndpoint = 'https://formsubmit.co/ajax/safarinamegabebonc@gmail.com';
+      const web3FormsEndpoint = 'https://api.web3forms.com/submit';
+      const web3FormsAccessKey = '0b134ad1-3c1b-49d5-8700-39f3c54ef824';
 
-      const sendFormSubmit = async (formData) => {
-        const payload = new FormData();
-        for (const [key, value] of formData.entries()) {
-          payload.append(key, key === '_subject' ? String(value).replace(/[\r\n]+/g, ' ').slice(0, 120) : value);
-        }
-        payload.set('_captcha', 'false');
-        payload.set('_template', 'table');
-        const replyEmail = payload.get('email');
-        if (replyEmail) payload.set('_replyto', String(replyEmail));
+      const sendWeb3Form = async (fields) => {
+        const payload = {
+          access_key: web3FormsAccessKey,
+          from_name: 'Boncoeur Safari — Portfolio',
+          ...fields
+        };
 
         let response;
         try {
-          response = await fetch(formSubmitEndpoint, {
+          response = await fetch(web3FormsEndpoint, {
             method: 'POST',
-            headers: { Accept: 'application/json' },
-            body: payload
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
           });
         } catch {
-          throw new Error('FormSubmit est inaccessible depuis ce réseau. Vérifiez le DNS ou le filtrage de votre VPN, puis réessayez. Vos champs sont conservés.');
+          throw new Error('Web3Forms est inaccessible depuis ce réseau. Vérifiez votre connexion puis réessayez.');
         }
 
         let result;
         try {
           result = await response.json();
         } catch {
-          throw new Error('FormSubmit a renvoyé une réponse invalide.');
+          throw new Error('Web3Forms a renvoyé une réponse invalide.');
         }
 
         if (!response.ok || result.success === false || result.success === 'false') {
-          throw new Error(result.message || 'FormSubmit n’a pas accepté le message.');
+          throw new Error(result.message || 'Web3Forms n’a pas accepté le message.');
         }
 
         return result;
       };
 
-      const submitSubscriptionRequest = (email) => {
-        const payload = new FormData();
-        payload.append('_subject', 'Nouvelle inscription à la liste d’information');
-        payload.append('email', String(email).trim());
-        payload.append('message', 'Nouvelle demande d’inscription depuis le site vitrine.');
-        return sendFormSubmit(payload);
-      };
-
-      const submitEmailForm = async (form, status, subject, fields, successText, submitRequest = sendFormSubmit) => {
+      const submitEmailForm = async (form, status, emailSubject, fields, successText) => {
         const button = form.querySelector('[type="submit"]');
         const originalMarkup = button.innerHTML;
         button.disabled = true;
         button.innerHTML = '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Envoi...';
         status.classList.remove('d-none', 'is-error');
         status.textContent = '';
-        const payload = new FormData();
-        payload.append('_subject', subject);
-        Object.entries(fields).forEach(([key, value]) => payload.append(key, value));
+
         try {
-          await submitRequest(payload);
+          await sendWeb3Form({
+            subject: emailSubject,
+            ...fields
+          });
           status.textContent = successText;
           form.reset();
         } catch (error) {
@@ -238,7 +222,33 @@
         }
       };
 
-      // Bootstrap et la navigation du site restent inchangés.
+      const contactForm = document.getElementById('contactForm');
+      contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        submitEmailForm(form, document.getElementById('contactStatus'), 'Nouveau message depuis le site vitrine', {
+          name: form.elements.name.value.trim(),
+          email: form.elements.email.value.trim(),
+          request_subject: form.elements.subject.value,
+          message: form.elements.message.value.trim()
+        }, 'Votre message a été envoyé à safarinamegabebonc@gmail.com.');
+      });
+
+      const newsletterForm = document.getElementById('newsletterForm');
+      newsletterForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        submitEmailForm(form, document.getElementById('newsletterStatus'), 'Nouvelle inscription à la liste d’information', {
+          email: form.elements.email.value.trim(),
+          message: 'Inscription à la liste d’information depuis le site vitrine.'
+        }, 'Abonnement confirmé.');
+      });
+
+      const menu = document.getElementById('siteNavigation');
+      menu.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', () => {
+        const collapse = bootstrap.Collapse.getInstance(menu);
+        if (collapse && window.innerWidth < 992) collapse.hide();
+      }));
     });
   </script>
 </body>
