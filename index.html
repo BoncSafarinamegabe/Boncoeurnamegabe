@@ -131,23 +131,18 @@
       <div class="container contact-layout">
         <div class="contact-copy">
           <p class="eyebrow eyebrow-blue">06 / Contact</p><h2>Votre projet commence par une conversation.</h2>
-          <p>Décrivez votre besoin. Votre message sera transmis directement par le serveur, sans demander au visiteur d’ouvrir sa boîte e-mail.</p>
+          <p>Décrivez votre besoin. Votre messagerie s’ouvrira automatiquement avec votre texte prérempli à destination de safarinamegabebonc@gmail.com.</p>
           <ul class="contact-list"><li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:safarinamegabebonc@gmail.com">safarinamegabebonc@gmail.com</a></li><li><i class="bi bi-telephone" aria-hidden="true"></i><a href="tel:0998434584">0998434584</a></li><li><i class="bi bi-geo-alt" aria-hidden="true"></i>Kinshasa, RDC</li></ul>
           <a class="whatsapp-link" href="https://wa.me/qr/FUIUVKXXEQS2K1" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp" aria-hidden="true"></i> Continuer sur WhatsApp</a>
         </div>
 
-        <form id="contactForm" class="site-form" action="https://formsubmit.co/safarinamegabebonc@gmail.com" method="POST">
+        <form id="contactForm" class="site-form">
           <div class="form-heading"><span>Parlons de votre besoin</span><i class="bi bi-arrow-down-right" aria-hidden="true"></i></div>
-          
-          <input type="hidden" name="_subject" value="Nouveau message depuis le site vitrine">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-
           <label for="contactName">Nom complet</label><input class="form-control" id="contactName" name="name" autocomplete="name" required />
           <label for="contactEmail">Adresse e-mail</label><input class="form-control" id="contactEmail" name="email" type="email" autocomplete="email" required />
           <label for="contactSubject">Sujet</label><select class="form-select" id="contactSubject" name="subject" required><option value="">Choisir un sujet</option><option>Consultation</option><option>Formation</option><option>Création de site</option><option>Marketing digital</option><option>Cybersécurité</option><option>Partenariat</option><option>Soutien financier</option><option>Autre demande</option></select>
           <label for="contactMessage">Votre message</label><textarea class="form-control" id="contactMessage" name="message" rows="4" required></textarea>
-          <button class="button button-blue form-submit" type="submit">Envoyer le message <i class="bi bi-send" aria-hidden="true"></i></button>
+          <button class="button button-blue form-submit" type="submit">Préparer l’e-mail <i class="bi bi-send" aria-hidden="true"></i></button>
         </form>
       </div>
     </section>
@@ -156,13 +151,8 @@
   <footer class="site-footer">
     <div class="container footer-main">
       <div class="footer-identity"><a class="navbar-brand" href="#accueil">Boncoeur <span>Safari</span></a><p>Formation, digital et sécurité à Kinshasa.</p><div class="social-links"><a href="https://www.facebook.com/profile.php?id=61557416573533" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook" aria-hidden="true"></i></a><a href="https://www.instagram.com/safari202571?igsh=Mzg0N2ZqN3dqaWE3" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a><a href="https://wa.me/qr/FUIUVKXXEQS2K1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="bi bi-whatsapp" aria-hidden="true"></i></a><a href="https://www.linkedin.com/in/safari-boncoeur-namegabe-6716543b9?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin" aria-hidden="true"></i></a></div></div>
-      
-      <form id="newsletterForm" class="newsletter-form" action="https://formsubmit.co/safarinamegabebonc@gmail.com" method="POST">
-        <label for="newsletterEmail">Demander l’inscription à la liste d’information</label><p>Une adresse e-mail suffit pour transmettre la demande.</p>
-        
-        <input type="hidden" name="_subject" value="Nouvelle inscription à la liste d’information">
-        <input type="hidden" name="_captcha" value="false">
-
+      <form id="newsletterForm" class="newsletter-form">
+        <label for="newsletterEmail">Demander l’inscription à la liste d’information</label><p>Une adresse e-mail suffit pour préparer la demande dans votre logiciel de messagerie.</p>
         <div class="newsletter-input"><input class="form-control" id="newsletterEmail" name="email" type="email" autocomplete="email" placeholder="Votre adresse e-mail" required /><button type="submit" aria-label="Envoyer la demande d’inscription"><i class="bi bi-arrow-right" aria-hidden="true"></i></button></div>
       </form>
     </div>
@@ -172,13 +162,35 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Uniquement la gestion de la navigation Bootstrap (conservée telle quelle)
       const menu = document.getElementById('siteNavigation');
       if (menu) {
         menu.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', () => {
           const collapse = bootstrap.Collapse.getInstance(menu);
           if (collapse && window.innerWidth < 992) collapse.hide();
         }));
+      }
+
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('contactName').value.trim();
+          const email = document.getElementById('contactEmail').value.trim();
+          const subject = document.getElementById('contactSubject').value;
+          const message = document.getElementById('contactMessage').value.trim();
+          const body = `Bonjour Boncoeur,\n\nJe m'appelle ${name} (${email}).\nSujet: ${subject}\n\nMessage:\n${message}`;
+          window.location.href = `mailto:safarinamegabebonc@gmail.com?subject=${encodeURIComponent(subject || 'Prise de contact site web')}&body=${encodeURIComponent(body)}`;
+        });
+      }
+
+      const newsletterForm = document.getElementById('newsletterForm');
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('newsletterEmail').value.trim();
+          const body = `Bonjour Boncoeur,\n\nJe souhaite m'inscrire à votre liste d'information avec l'adresse e-mail suivante : ${email}`;
+          window.location.href = `mailto:safarinamegabebonc@gmail.com?subject=${encodeURIComponent('Demande d’inscription à la newsletter')}&body=${encodeURIComponent(body)}`;
+        });
       }
     });
   </script>
